@@ -53,6 +53,8 @@ class PersonController extends Controller
         $person = $request->isMethod('put') ? Person::findOrFail($request->person_id) : new Person;
 
         $interestsArray = $request->input('interests');
+        $interests = Interest::where('person_id', $request->input('person_id'))->delete();
+
         $person->id = $request->input('person_id');
         $person->first_name = $request->input('first_name');
         $person->last_name = $request->input('last_name');
@@ -100,6 +102,9 @@ class PersonController extends Controller
     {
         // Get person
         $person = Person::findOrFail($id);
+
+        // Delete interests
+        $interests = Interest::where('person_id', $id)->delete();
 
         // Delete the person record
         if($person->delete()){
